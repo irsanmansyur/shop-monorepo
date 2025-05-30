@@ -27,7 +27,7 @@ services:
     image: shop_web
     command: ["npm", "run", "start"]
     environment:
-      VITE_API: http://localhost:3000
+      VITE_API: /backend-api
 
     networks:
       npm_overlay_net:
