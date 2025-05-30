@@ -34,6 +34,9 @@ COPY ./apps/web ./apps/web
 COPY ./packages/trpc ./packages/trpc
 COPY --from=dev-deps-web /app/apps/web/node_modules ./apps/web/node_modules
 
+ARG VITE_API
+ENV VITE_API=$VITE_API
+
 # Build React Router App (Vite atau lainnya)
 RUN cd apps/web && npm run build
 
