@@ -12,7 +12,7 @@ RUN apt-get update && apt-get install -y curl ca-certificates openssl \
 	&& rm -rf /var/lib/apt/lists/*
 
 # Copy only necessary files first for better layer caching
-COPY bun.lockb package.json ./
+COPY bun.lock package.json ./
 COPY prisma ./prisma
 
 # Install dependencies and generate prisma
