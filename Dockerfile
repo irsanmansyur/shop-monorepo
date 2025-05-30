@@ -8,11 +8,15 @@ COPY package.json package-lock.json ./
 RUN npm install
 
 COPY prisma ./prisma
-COPY . .
-
 RUN npx prisma generate
 
-RUN npm run --workspace=apps/web build
+COPY . .
+
+WORKDIR /app/apps/web
+RUN npm install
+RUN npm run build
+
+WORKDIR /app
 
 EXPOSE 3000 4000
 
