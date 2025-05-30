@@ -23,7 +23,9 @@ WORKDIR /app/apps/web
 
 COPY ./apps/web/package*.json ./
 
-RUN npm ci
+# RUN npm ci
+RUN npm install
+
 
 # ==============================
 # ==== Node Prod Deps (Web) ====
