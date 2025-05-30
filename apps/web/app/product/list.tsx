@@ -1,4 +1,4 @@
-import { trpc } from "@packages/trpc";
+import { trpc } from "~/lib/trpc";
 import { ProductList } from "../components/ProductList";
 import { useSearch, useWeb } from "~/store/zustan";
 import { useEffect, useRef, useState } from "react";

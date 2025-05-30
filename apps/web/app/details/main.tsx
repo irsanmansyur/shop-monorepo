@@ -3,7 +3,7 @@ import React, { useEffect } from "react";
 import DetailsProduct from "./details";
 import OverviewDetails from "./overview-details";
 import { MenubarDemo } from "./MenuBar";
-import { trpc } from "@packages/trpc";
+import { trpc } from "~/lib/trpc";
 import { useParams } from "react-router";
 import "./index.css";
 import { useDetails } from "./useDetails";
