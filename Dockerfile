@@ -10,6 +10,8 @@ RUN apt-get update && apt-get install -y openssl curl && rm -rf /var/lib/apt/lis
 # Copy package.json dan package-lock.json dulu (cache layer npm install)
 COPY package*json ./
 
+COPY packages ./packages
+
 # Bersihkan cache npm untuk menghindari error modul native Rollup
 RUN npm cache clean --force
 
