@@ -13,8 +13,20 @@ RUN npx prisma generate
 COPY . .
 
 WORKDIR /app/apps/web
+
+# Bersihkan sisa instalasi jika ada
+RUN rm -rf node_modules package-lock.json
+
+COPY apps/web/package.json apps/web/package-lock.json ./
+
 RUN npm install
+
+COPY apps/web ./
+
 RUN npm run build
+
+
+
 
 WORKDIR /app
 
