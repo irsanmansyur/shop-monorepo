@@ -5,17 +5,12 @@ COPY . .
 RUN bun install
 RUN bun x prisma generate
 
-# ---- Build Frontend ----
-FROM base AS frontend
+
 WORKDIR /app/apps/web
-RUN bun run build  --no-cache
+RUN bun run build
 
-# ---- Runner ----
-FROM base AS runner
+
 WORKDIR /app
-COPY . .
-
-COPY --from=frontend /app/apps/web/build ./apps/web/build
 
 
 EXPOSE 3000 4000
