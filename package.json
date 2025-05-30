@@ -23,8 +23,8 @@
   },
   "packageManager": "bun@1.2.12",
   "workspaces": [
-    "apps/*",
-    "packages/*"
+    "apps/web",
+    "apps/api"
   ],
   "dependencies": {
     "@prisma/client": "^6.8.2",
