@@ -26,7 +26,7 @@ export function LoginForm({
   className,
   ...props
 }: React.ComponentPropsWithoutRef<"div">) {
-  const [form, setForm, { errors, handler, setErrors, reset, loading }] =
+  const [form, setForm, { errors, handler, reset, loading }] =
     useZod(loginSchema);
 
   function handleChange(e: React.ChangeEvent<HTMLInputElement>) {
