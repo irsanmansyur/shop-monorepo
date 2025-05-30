@@ -8,7 +8,7 @@ RUN bun x prisma generate
 # ---- Build Frontend ----
 FROM base AS frontend
 WORKDIR /app/apps/web
-RUN bun x vite build
+RUN bun run build
 
 # ---- Runner ----
 FROM base AS runner
