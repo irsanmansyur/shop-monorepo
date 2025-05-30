@@ -10,7 +10,7 @@ const app = new Hono();
 app.use(
   "/api/auth/*", // or replace with "*" to enable cors for all routes
   cors({
-    origin: "http://localhost:5173", // replace with your origin
+    origin: "https://shop.chank.my.id", // replace with your origin
     allowHeaders: ["Content-Type", "Authorization"],
     allowMethods: ["POST", "GET", "OPTIONS"],
     exposeHeaders: ["Content-Length"],
@@ -24,7 +24,7 @@ app.on(["POST", "GET"], "/api/auth/**", (c) => auth.handler(c.req.raw));
 app.use(
   "/api/trpc/*",
   cors({
-    origin: "http://localhost:5173",
+    origin: "https://shop.chank.my.id",
     allowHeaders: ["Content-Type", "Authorization"],
     allowMethods: ["POST", "GET", "OPTIONS"],
     exposeHeaders: ["Content-Length"],
