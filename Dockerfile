@@ -15,6 +15,9 @@ FROM base AS runner
 WORKDIR /app
 COPY . .
 
+COPY --from=frontend /app/apps/web/build ./apps/web/build
+
+
 EXPOSE 3000 4000
 
 CMD ["bun", "nyala"]
