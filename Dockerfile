@@ -16,7 +16,7 @@ FROM node:20-alpine AS development-dependencies-env
 
 WORKDIR /app
 
-COPY ./apps/web/package.json ./apps/web/package-lock.json ./apps/web/
+COPY ./apps/web/package*json ./apps/web/
 
 RUN cd apps/web && npm ci
 
