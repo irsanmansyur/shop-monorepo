@@ -1,0 +1,18 @@
+version: "3.8"
+
+services:
+  app:
+    build: .
+    environment:
+      DATABASE_URL: postgres://postgres:rae5ChieY4wee0si@172.72.0.8:5432/shop-test
+      BETTER_AUTH_SECRET: changeme
+
+    networks:
+      npm_overlay_net:
+      wg-easy-net:
+
+networks:
+  npm_overlay_net:
+    external: true
+  wg-easy-net:
+    external: true
