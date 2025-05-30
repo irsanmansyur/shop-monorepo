@@ -1,45 +1,61 @@
-# ---- Base: install deps, prisma, etc. ----
-FROM oven/bun:1.2 AS base
+# ==== Bun Base untuk API ====
+FROM oven/bun:1.2 AS bun-base
 
 WORKDIR /app
 
-# Salin semua file
-COPY . .
-
-# Install OpenSSL agar Prisma CLI bisa jalan
+# Install OpenSSL untuk Prisma CLI
 RUN apt-get update -y && apt-get install -y openssl
 
-# Install dependencies
-RUN bun install
+COPY . .
 
-# Generate Prisma client
+RUN bun install
 RUN bunx prisma generate
 
+# ==== Node Dev Dependencies for Web ====
+FROM node:20-alpine AS development-dependencies-env
 
-# ---- Build Frontend (Vite) ----
-FROM base AS frontend
+WORKDIR /app
 
-WORKDIR /app/apps/web
+COPY ./apps/web/package.json ./apps/web/package-lock.json ./apps/web/
 
-RUN bunx vite build
+RUN cd apps/web && npm ci
 
-# ---- Final Runner ----
+# ==== Node Production Dependencies for Web ====
+FROM node:20-alpine AS production-dependencies-env
+
+WORKDIR /app
+
+COPY ./apps/web/package*json ./apps/web/
+
+RUN cd apps/web && npm ci --omit=dev
+
+# ==== Build Web Frontend ====
+FROM node:20-alpine AS build-env
+
+WORKDIR /app
+
+COPY ./apps/web ./apps/web
+COPY --from=development-dependencies-env /app/apps/web/node_modules ./apps/web/node_modules
+
+RUN cd apps/web && npm run build
+
+# ==== Final Runner ====
 FROM oven/bun:1.2 AS runner
 
 WORKDIR /app
 
-# Copy semua file dari base
+# Copy backend files
 COPY . .
 
-# Copy hasil build frontend dari tahap frontend
-COPY --from=frontend /app/apps/web/build ./apps/web/build
-
-# Jalankan Prisma generate lagi untuk jaga-jaga
+# Install OpenSSL + Prisma generate ulang (safety)
 RUN apt-get update -y && apt-get install -y openssl \
 	&& bunx prisma generate
 
-# Expose port backend dan frontend jika perlu
+# Copy build frontend dari stage Node ke lokasi yang bisa diserve (jika diperlukan)
+COPY --from=build-env /app/apps/web/build ./apps/web/build
+
+# Expose ports (sesuaikan jika Hono dan frontend serve di port berbeda)
 EXPOSE 3000 4000
 
-# Jalankan Hono backend (misal dari apps/api/src/index.ts)
+# Jalankan backend Hono
 CMD ["bun", "run", "./apps/api/src/index.ts"]
