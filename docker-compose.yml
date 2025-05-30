@@ -1,16 +1,30 @@
 version: "3.8"
 
 services:
-  app:
-    container_name: shop_monorepo
+  api:
+    container_name: shop_api
     build:
       context: .
-      dockerfile: Dockerfile
+      target: runner
     image: shop_monorepo
+    command: ["bun", "run", "./apps/api/src/index.ts"]
 
     environment:
       DATABASE_URL: postgres://postgres:rae5ChieY4wee0si@172.72.0.8:5432/shop-test
       BETTER_AUTH_SECRET: changeme
+
+    networks:
+      npm_overlay_net:
+      wg-easy-net:
+
+  web:
+    container_name: shop_web
+    build:
+      context: .
+      target: build-web
+    image: shop_monorepo
+
+    command: ["npm", "run", "start"]
 
     networks:
       npm_overlay_net:
