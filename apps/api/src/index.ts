@@ -2,19 +2,10 @@ import { trpcServer } from "@hono/trpc-server";
 import { Hono } from "hono";
 import { auth } from "../auth";
 import { cors } from "hono/cors";
-import { serveStatic } from "hono/bun";
 
 import { appRouter } from "@packages/trpc/server/context";
 
 const app = new Hono();
-
-app.use(
-  "*",
-  serveStatic({
-    root: "./apps/web/dist",
-    rewriteRequestPath: (p) => (p === "/" ? "/index.html" : p),
-  }),
-);
 
 app.use(
   "/api/auth/*", // or replace with "*" to enable cors for all routes
