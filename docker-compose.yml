@@ -2,7 +2,12 @@ version: "3.8"
 
 services:
   app:
-    build: .
+    container_name: course_online
+    build:
+      context: .
+      dockerfile: Dockerfile
+    image: course_online
+
     environment:
       DATABASE_URL: postgres://postgres:rae5ChieY4wee0si@172.72.0.8:5432/shop-test
       BETTER_AUTH_SECRET: changeme
