@@ -17,4 +17,4 @@ COPY . .
 
 EXPOSE 3000 4000
 
-CMD ["bun", "start"]
+CMD ["bun", "nyala"]

@@ -2,7 +2,7 @@
   "name": "shop-monorepo",
   "private": true,
   "scripts": {
-    "nyaka": "concurrently -k -n api,web -c blue,green \"bun apps/api/index.ts\" \"cd apps/web && PORT=4000 bun start\"",
+    "nyala": "concurrently -k -n api,web -c blue,green \"bun apps/api/index.ts\" \"cd apps/web && PORT=4000 bun start\"",
     "build": "turbo run build",
     "dev": "turbo run dev",
     "start": "turbo run start",
