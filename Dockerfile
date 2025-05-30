@@ -1,31 +1,28 @@
 # ---- Base Image ----
-FROM node:20-slim AS base
+FROM node:20-slim
 
 # Set working directory
 WORKDIR /app
 
-# Install bun (manual)
-RUN apt-get update && apt-get install -y curl ca-certificates openssl \
-	&& curl -fsSL https://bun.sh/install | bash \
-	&& ln -s /root/.bun/bin/bun /usr/local/bin/bun \
-	&& apt-get remove --purge -y curl \
-	&& rm -rf /var/lib/apt/lists/*
+# Install OS deps for Prisma and others
+RUN apt-get update && apt-get install -y openssl && rm -rf /var/lib/apt/lists/*
 
-# Copy only necessary files first for better layer caching
-COPY bun.lock package.json ./
+# Copy only what is needed for install
+COPY package.json ./
 COPY prisma ./prisma
 
-# Install dependencies and generate prisma
-RUN bun install && bun x prisma generate
+# Install dependencies and generate Prisma client
+RUN npm install
+RUN npx prisma generate
 
-# Copy all remaining source files
+# Copy rest of the app
 COPY . .
 
-# Build web app (assumed located in apps/web)
-RUN bun run --cwd ./apps/web build
+# Build frontend (if any)
+RUN npm run --workspace=apps/web build
 
-# Expose ports (3000 for web, 4000 optional)
+# Expose ports (adjust as needed)
 EXPOSE 3000 4000
 
-# Start the app
-CMD ["bun", "nyala"]
+# Start app (custom script like `nyala` must exist in package.json)
+CMD ["npm", "run", "nyala"]
