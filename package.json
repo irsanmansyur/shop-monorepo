@@ -2,9 +2,9 @@
   "name": "shop-monorepo",
   "private": true,
   "scripts": {
-    "api": "node ./apps/api/src/index.js",
-    "web": "cd apps/web && cross-env PORT=4000 npm run start",
-    "nyala": "concurrently -k -n api,web -c blue,green \"node ./apps/api/src/index.js\" \"cd apps/web && cross-env PORT=4000 npm run start\"",
+    "api": "bun run ./apps/api/src/index.ts",
+    "web": "cd apps/web && PORT=4000 bun start",
+    "nyala": "concurrently -k -n api,web -c blue,green \"bun run ./apps/api/src/index.ts\" \"cd apps/web && PORT=4000 bun start\"",
     "build": "turbo run build",
     "dev": "turbo run dev",
     "start": "turbo run start",
