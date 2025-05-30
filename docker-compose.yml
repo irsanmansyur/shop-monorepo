@@ -2,11 +2,11 @@ version: "3.8"
 
 services:
   app:
-    container_name: course_online
+    container_name: shop_monorepo
     build:
       context: .
       dockerfile: Dockerfile
-    image: course_online
+    image: shop_monorepo
 
     environment:
       DATABASE_URL: postgres://postgres:rae5ChieY4wee0si@172.72.0.8:5432/shop-test
