@@ -34,7 +34,7 @@ COPY ./apps/web ./apps/web
 COPY ./packages/trpc ./packages/trpc
 COPY --from=dev-deps-web /app/apps/web/node_modules ./apps/web/node_modules
 
-ENV VITE_API=https://shop-api.chank.my.id
+ENV VITE_API=https://shop.chank.my.id/backend-api
 
 # Build React Router App (Vite atau lainnya)
 RUN cd apps/web && npm run build
