@@ -21,7 +21,7 @@ services:
     container_name: shop_web
     build:
       context: .
-      target: build-web
+      target: web-runner
     image: shop_monorepo
 
     command: ["npm", "run", "start"]
