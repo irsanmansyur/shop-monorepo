@@ -53,6 +53,25 @@ COPY --from=dev-deps-web /app/apps/web/node_modules ./apps/web/node_modules
 # Build React Router App (Vite atau lainnya)
 RUN cd apps/web && npm run build
 
+
+# ==============================
+# ==== Web Runner Stage ========
+# ==============================
+FROM node:20-alpine AS web-runner
+
+WORKDIR /app/apps/web
+
+# Copy hasil build dan node_modules
+COPY --from=build-web /app/apps/web/node_modules ./node_modules
+COPY --from=build-web /app/apps/web/build ./build
+COPY ./apps/web/package*.json ./
+COPY ./apps/web ./
+
+EXPOSE 4000
+
+CMD ["npm", "run", "start"]
+
+
 # ==============================
 # ==== Final Bun Runner ========
 # ==============================
@@ -73,7 +92,5 @@ RUN bunx prisma generate
 COPY --from=build-web /app/apps/web/build ./apps/web/build
 
 # Expose API dan Web ports (ubah sesuai kebutuhan)
-EXPOSE 3000 4000
-
-# Jalankan Hono API
+EXPOSE 3000
 CMD ["bun", "run", "./apps/api/src/index.ts"]
