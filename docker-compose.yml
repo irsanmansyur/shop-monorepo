@@ -5,8 +5,9 @@ services:
     container_name: shop_api
     build:
       context: .
+      dockerfile: Dockerfile
       target: runner
-    image: shop_monorepo
+    image: shop_api
     command: ["bun", "run", "./apps/api/src/index.ts"]
 
     environment:
@@ -22,7 +23,8 @@ services:
     build:
       context: .
       target: web-runner
-    image: shop_monorepo
+      dockerfile: DockerfileWeb
+    image: shop_web
     command: ["npm", "run", "start"]
 
     networks:
