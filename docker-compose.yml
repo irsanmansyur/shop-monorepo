@@ -26,6 +26,8 @@ services:
       dockerfile: DockerfileWeb
     image: shop_web
     command: ["npm", "run", "start"]
+    environment:
+      VITE_API: http://localhost:3000
 
     networks:
       npm_overlay_net:
