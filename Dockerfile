@@ -8,7 +8,7 @@ RUN bun x prisma generate
 # ---- Build Frontend ----
 FROM base AS frontend
 WORKDIR /app/apps/web
-RUN bun run build
+RUN bun run build  --no-cache
 
 # ---- Runner ----
 FROM base AS runner
