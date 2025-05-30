@@ -47,6 +47,7 @@ WORKDIR /app
 
 # Salin source dan deps dari dev stage
 COPY ./apps/web ./apps/web
+COPY ./packages/trpc ./packages/trpc
 COPY --from=dev-deps-web /app/apps/web/node_modules ./apps/web/node_modules
 
 # Build React Router App (Vite atau lainnya)
