@@ -1,44 +1,45 @@
-# Gunakan image node LTS slim untuk ukuran kecil dan stabil
-FROM node:20-slim
+# ---- Base: install deps, prisma, etc. ----
+FROM oven/bun:1.2 AS base
 
-# Set working directory di container
 WORKDIR /app
 
-# Install openssl (jika perlu, sesuai kebutuhan kamu)
-RUN apt-get update && apt-get install -y openssl curl && rm -rf /var/lib/apt/lists/*
+# Salin semua file
+COPY . .
 
-# Copy package.json dan package-lock.json dulu (cache layer npm install)
-COPY package*json ./
+# Install OpenSSL agar Prisma CLI bisa jalan
+RUN apt-get update -y && apt-get install -y openssl
 
-COPY packages ./packages
+# Install dependencies
+RUN bun install
 
-# Bersihkan cache npm untuk menghindari error modul native Rollup
-RUN npm cache clean --force
+# Generate Prisma client
+RUN bunx prisma generate
 
-# Install dependencies root (monorepo deps, prisma client, dll)
-RUN npm install
 
-# Copy prisma schema dan generate prisma client
-COPY prisma ./prisma
-RUN npx prisma generate
+# ---- Build Frontend (Vite) ----
+FROM base AS frontend
 
-# Copy seluruh source aplikasi frontend (apps/web)
-COPY apps/web ./apps/web
-
-# Set working directory ke apps/web
 WORKDIR /app/apps/web
 
-# Install dependencies khusus apps/web (jika ada package.json disini dan perlu install ulang)
-RUN npm install
+RUN bunx vite build
 
-# Build aplikasi frontend (perintah build kamu: react-router build)
-RUN npm run build
+# ---- Final Runner ----
+FROM oven/bun:1.2 AS runner
 
-# Kembali ke root working dir (optional)
 WORKDIR /app
 
-# Ekspos port yang dipakai aplikasi
+# Copy semua file dari base
+COPY . .
+
+# Copy hasil build frontend dari tahap frontend
+COPY --from=frontend /app/apps/web/build ./apps/web/build
+
+# Jalankan Prisma generate lagi untuk jaga-jaga
+RUN apt-get update -y && apt-get install -y openssl \
+	&& bunx prisma generate
+
+# Expose port backend dan frontend jika perlu
 EXPOSE 3000 4000
 
-# Perintah menjalankan aplikasi (sesuaikan dengan script di package.json)
-CMD ["npm", "run", "nyala"]
+# Jalankan Hono backend (misal dari apps/api/src/index.ts)
+CMD ["bun", "run", "./apps/api/src/index.ts"]
