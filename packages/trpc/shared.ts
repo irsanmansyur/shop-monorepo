@@ -1,2 +1,3 @@
-import type { AppRouter } from "./server/context";
-export type { AppRouter };
+import { type AppRouter, appRouter } from "./server/context";
+
+export { type AppRouter, appRouter };
