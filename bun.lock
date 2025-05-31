@@ -60,6 +60,7 @@
         "react-router": "^7.5.3",
         "sonner": "^2.0.3",
         "tailwind-merge": "^3.3.0",
+        "zod": "^3.25.42",
         "zustand": "^5.0.5",
       },
       "devDependencies": {
@@ -882,6 +883,8 @@
     "send/encodeurl": ["encodeurl@1.0.2", "", {}, ""],
 
     "web/typescript": ["typescript@5.8.3", "", { "bin": { "tsc": "bin/tsc", "tsserver": "bin/tsserver" } }, ""],
+
+    "web/zod": ["zod@3.25.42", "", {}, "sha512-PcALTLskaucbeHc41tU/xfjfhcz8z0GdhhDcSgrCTmSazUuqnYqiXO63M0QUBVwpBlsLsNVn5qHSC5Dw3KZvaQ=="],
 
     "@isaacs/cliui/string-width/emoji-regex": ["emoji-regex@9.2.2", "", {}, ""],
 
