@@ -14,6 +14,7 @@ const OverviewDetails: React.FC<OverviewDetailsProps> = ({ product }) => {
   useEffect(() => {
     if (ref?.current) set({ sectionOverview: ref });
   }, [ref]);
+
   return (
     <div id="overview" className="w-full" ref={ref}>
       <CarauselDetails product={product} />

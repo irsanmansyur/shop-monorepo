@@ -13,6 +13,7 @@ export const productRouter = router({
           page: z.number().optional(),
           limit: z.number().optional(),
           search: z.string().optional(),
+          sortPrice: z.enum(["asc", "desc"]).optional(),
         })
         .optional(),
     )
@@ -21,7 +22,7 @@ export const productRouter = router({
       const limit = input?.limit && input.limit > 0 ? input.limit : 10;
       const skip = (page - 1) * limit;
       const searching = searchConditionPrisma(input?.search, ["name"]);
-      console.log(searching);
+
       const where = {
         isActive: true,
         ...(input?.minPrice !== undefined || input?.maxPrice !== undefined
@@ -39,10 +40,15 @@ export const productRouter = router({
         ...searching,
       };
 
+      let orderBy: Record<string, "desc" | "asc"> = { createdAt: "desc" };
+      if (input?.sortPrice) {
+        orderBy = { price: input.sortPrice };
+      }
+
       const [items, total] = await Promise.all([
         db.product.findMany({
           where,
-          orderBy: { createdAt: "desc" },
+          orderBy,
           skip,
           take: limit,
         }),
@@ -60,7 +66,7 @@ export const productRouter = router({
   getOne: publicProcedure
     .input(z.object({ slug: z.string() }))
     .query(async ({ input }) => {
-      return db.product.findFirst({
+      const product = await db.product.findFirst({
         where: {
           slug: input.slug,
           isActive: true,
@@ -69,5 +75,8 @@ export const productRouter = router({
           createdAt: "desc",
         },
       });
+
+      if (!product) return null;
+      return product;
     }),
 });

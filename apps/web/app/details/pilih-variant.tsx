@@ -177,7 +177,14 @@ const ProductVariations = ({ product }: Props) => {
       </div>
 
       {/* Action Buttons */}
-      <div className="flex gap-3">
+      <div
+        className="fixed md:relative bottom-0 left-0 right-0 z-50
+        bg-gradient-to-r from-slate-200 to-red-100
+        md:bg-none
+        border-t md:border-t-0 border-gray-200
+        p-3 md:p-0 flex gap-3"
+      >
+        {" "}
         <StartOrder product={product} />
         <Button
           id="add-to-cart-btn"

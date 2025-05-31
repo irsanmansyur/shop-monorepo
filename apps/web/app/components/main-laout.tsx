@@ -1,6 +1,7 @@
 import React from "react";
 import { RangeHarga } from "./range-harga";
 import { MenuFilter } from "~/product/MenuFilter";
+import { SortPrice } from "./product/sorting-price";
 interface ProductLayoutProps {
   children: React.ReactNode;
 }
@@ -12,8 +13,14 @@ const ProductLayout: React.FC<ProductLayoutProps> = ({ children }) => {
         <div className="flex gap-4 pt-3 relative">
           <div className="hidden sm:inline w-[240px] shrink-0 static top-0">
             <div className="border rounded shadow bg-slate-50 p-4 space-y-4">
-              <h2 className="font-bold text-xl">Filter</h2>
-              <RangeHarga />
+              <div>
+                <h2 className="font-bold text-xl">Filter</h2>
+                <RangeHarga />
+              </div>
+              <div>
+                <h2 className="font-bold text-lg pb-1">Sort Price</h2>
+                <SortPrice />
+              </div>
             </div>
           </div>
           <div className="p-2 sm:p-4  space-y-4 w-full md:border md:rounded md:shadow bg-slate-50 relative">

@@ -1,8 +1,9 @@
 import { Filter, Grid3X3, Menu } from "lucide-react";
 import { useEffect, useState } from "react";
+import { SortPrice } from "~/components/product/sorting-price";
 import { RangeHarga } from "~/components/range-harga";
 import { Button } from "~/components/ui/button";
-import { Input } from "~/components/ui/input";
+
 import { Label } from "~/components/ui/label";
 import {
   Sheet,
@@ -102,8 +103,12 @@ export function SheetDemo() {
             perubahanmu.
           </SheetDescription>
         </SheetHeader>
-        <div className="p-4">
+        <div className="p-4 space-y-6">
           <RangeHarga />
+          <div>
+            <h3 className="font-bold pb-2">Sort Price</h3>
+            <SortPrice />
+          </div>
         </div>
         <SheetFooter>
           <SheetClose asChild>

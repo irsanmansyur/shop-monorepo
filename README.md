@@ -1,84 +1,88 @@
-# Turborepo starter
+# Shop Monorepo - Dokumentasi Docker & Deployment
 
-This Turborepo starter is maintained by the Turborepo core team.
+Repositori ini berisi aplikasi monorepo untuk Shop, terdiri dari API backend (Bun + Hono + Prisma) dan frontend web (React Router, Vite). Proyek ini sudah terintegrasi dengan Docker untuk memudahkan proses development dan deployment.
 
-## Using this example
+---
 
-Run the following command:
+## Struktur Penting
 
-```sh
-npx create-turbo@latest
-```
+- `Dockerfile` : Untuk build dan menjalankan service API (backend).
+- `DockerfileWeb` : Untuk build dan menjalankan service Web (frontend).
+- `docker-compose.yml` : Untuk mengatur dan menjalankan kedua service secara bersamaan.
+- `.env` : Berisi environment variable penting untuk API dan Web.
 
-## What's inside?
+---
 
-This Turborepo includes the following packages/apps:
+## Cara Menjalankan dengan Docker Compose
 
-### Apps and Packages
+1. **Pastikan Docker & Docker Compose sudah terinstall di sistem kamu.**
 
-- `docs`: a [Next.js](https://nextjs.org/) app
-- `web`: another [Next.js](https://nextjs.org/) app
-- `@repo/ui`: a stub React component library shared by both `web` and `docs` applications
-- `@repo/eslint-config`: `eslint` configurations (includes `eslint-config-next` and `eslint-config-prettier`)
-- `@repo/typescript-config`: `tsconfig.json`s used throughout the monorepo
+2. **Siapkan file `.env` di root project**
 
-Each package/app is 100% [TypeScript](https://www.typescriptlang.org/).
+	Contoh isi:
+	```bash
+	DATABASE_URL=postgres://postgres:sdfsdfdessdf@172.72.0.8:5432/shop-test
+	BETTER_AUTH_SECRET=changeme
+	VITE_API=http://localhost:3000
+	CORS_ORIGIN=https://shop.chank.my.id,http://localhost:5173
+	```
 
-### Utilities
+3. **Jalankan perintah berikut di root project:**
 
-This Turborepo has some additional tools already setup for you:
+	```sh
+	docker-compose up --build
+	```
 
-- [TypeScript](https://www.typescriptlang.org/) for static type checking
-- [ESLint](https://eslint.org/) for code linting
-- [Prettier](https://prettier.io) for code formatting
+	Ini akan:
+   - Build dan menjalankan service API di port 3000 (container: `shop_api`)
+   - Build dan menjalankan service Web di port 4000 (container: `shop_web`)
 
-### Build
 
-To build all apps and packages, run the following command:
+4. **Akses aplikasi:**
+   - API: `http://localhost:3000`
+   - Web: `http://localhost:4000`
 
-```
-cd my-turborepo
-pnpm build
-```
+---
 
-### Develop
+## Penjelasan File
 
-To develop all apps and packages, run the following command:
+### Dockerfile (API)
+- Menggunakan image `oven/bun`.
+- Install dependency, generate Prisma Client, dan expose port 3000.
+- Jalankan API dengan perintah: `bun run ./apps/api/src/index.ts`
 
-```
-cd my-turborepo
-pnpm dev
-```
+### DockerfileWeb (Web)
+- Multi-stage build:
+  - Install dependency (dev & prod).
+  - Build aplikasi web (Vite).
+  - Jalankan web server di port 4000 dengan `npm run start`.
 
-### Remote Caching
+### docker-compose.yml
+- Mendefinisikan dua service: `api` dan `web`.
+- Mengatur environment variable, network, dan build context untuk masing-masing service.
+- Menggunakan dua external network: `npm_overlay_net` dan `wg-easy-net`.
 
-> [!TIP]
-> Vercel Remote Cache is free for all plans. Get started today at [vercel.com](https://vercel.com/signup?/signup?utm_source=remote-cache-sdk&utm_campaign=free_remote_cache).
+---
 
-Turborepo can use a technique known as [Remote Caching](https://turborepo.com/docs/core-concepts/remote-caching) to share cache artifacts across machines, enabling you to share build caches with your team and CI/CD pipelines.
+## Catatan
 
-By default, Turborepo will cache locally. To enable Remote Caching you will need an account with Vercel. If you don't have an account you can [create one](https://vercel.com/signup?utm_source=turborepo-examples), then enter the following commands:
+- Pastikan network eksternal (`npm_overlay_net` dan `wg-easy-net`) sudah dibuat di Docker host.
+- Untuk development lokal, kamu bisa mengubah environment variable di `.env` sesuai kebutuhan.
+- Jika ingin mengakses API dari web, pastikan variabel `VITE_API` di `.env` dan environment Docker sudah sesuai.
 
-```
-cd my-turborepo
-npx turbo login
-```
+---
 
-This will authenticate the Turborepo CLI with your [Vercel account](https://vercel.com/docs/concepts/personal-accounts/overview).
+## Troubleshooting
 
-Next, you can link your Turborepo to your Remote Cache by running the following command from the root of your Turborepo:
+- Jika ada masalah koneksi database, cek kembali `DATABASE_URL` di `.env`.
+- Jika port sudah digunakan, pastikan tidak ada aplikasi lain yang berjalan di port 3000 atau 4000.
 
-```
-npx turbo link
-```
+---
 
-## Useful Links
+## Kontribusi
 
-Learn more about the power of Turborepo:
+Silakan buat issue atau pull request jika ingin berkontribusi atau menemukan bug.
 
-- [Tasks](https://turborepo.com/docs/crafting-your-repository/running-tasks)
-- [Caching](https://turborepo.com/docs/crafting-your-repository/caching)
-- [Remote Caching](https://turborepo.com/docs/core-concepts/remote-caching)
-- [Filtering](https://turborepo.com/docs/crafting-your-repository/running-tasks#using-filters)
-- [Configuration Options](https://turborepo.com/docs/reference/configuration)
-- [CLI Usage](https://turborepo.com/docs/reference/command-line-reference)
+---
+
+**Selamat ngoding! 🚀**

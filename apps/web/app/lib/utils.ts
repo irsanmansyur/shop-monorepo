@@ -17,3 +17,12 @@ export const formatPrice = (
     minimumFractionDigits,
   }).format(price);
 };
+
+export function stripHtml(html: string) {
+  // Hapus tag HTML
+  let text = html.replace(/<[^>]*>?/gm, "");
+  // Ganti newline/tab/whitespace berlebih dengan satu spasi
+  text = text.replace(/\s+/g, " ");
+  // Hilangkan spasi di awal/akhir
+  return text.trim();
+}

@@ -5,7 +5,7 @@ import { useEffect, useRef, useState } from "react";
 
 export default function ProductsPage() {
   const { q } = useSearch();
-  const { filterPrice } = useWeb();
+  const { filterPrice, productSort } = useWeb();
 
   const [page, setPage] = useState(1);
   const [products, setProducts] = useState<WEB.Product[]>([]);
@@ -16,6 +16,7 @@ export default function ProductsPage() {
       minPrice: filterPrice[0],
       maxPrice: filterPrice[1],
     }),
+    ...(productSort?.price && { sortPrice: productSort.price }),
     limit: 10,
     page,
     ...(q && q.length > 1 && { search: q }),

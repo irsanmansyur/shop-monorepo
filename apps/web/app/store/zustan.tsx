@@ -6,6 +6,9 @@ type CartItem = WEB.Product & { quantity: number; selected: boolean };
 type OrderItem = WEB.Product & { quantity: number };
 type Base = {
   productSearch?: string;
+  productSort?: {
+    price?: "asc" | "desc";
+  };
   detailsActiveTab?: WEB.DetailsActiveTab;
   filterPrice?: number[];
   product?: WEB.Product;
