@@ -2,12 +2,12 @@ import Header from "~/components/Header";
 import type { Route } from "./+types/details";
 import MainDetails from "~/details/main";
 import { useLoaderData, type LoaderFunctionArgs } from "react-router";
-import { trpcServer } from "~/lib/trpc.server";
 import { stripHtml } from "~/lib/utils";
+import { trpc } from "~/lib/trpc";
 
 export async function loader({ params }: LoaderFunctionArgs) {
   const slug = params.slug as string;
-  const product = await trpcServer.product.getOne({ slug });
+  const product = await trpc.useUtils().product.getOne.fetch({ slug });
 
   // Konversi ke JSON agar data benar-benar serializable
   const safeProduct = product ? JSON.parse(JSON.stringify(product)) : null;
