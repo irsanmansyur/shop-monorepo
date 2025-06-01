@@ -36,7 +36,7 @@ export default function ProductsPage() {
   // Reset page & products saat q/filter berubah
   useEffect(() => {
     setPage(1);
-  }, [q, filterPrice]);
+  }, [q, filterPrice, productSort]);
 
   // Infinite scroll handler
   const loader = useRef<HTMLDivElement>(null);
